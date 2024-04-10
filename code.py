@@ -94,9 +94,15 @@ SPC_SUP = KC.HT(KC.SCLN, KC.RCTL, prefer_hold=False)
 
 XXXXXXX = KC.NO
 
-# M buttons
+# M custom buttons
 UNDO = KC.LGUI(KC.Z)
-ZOOM = KC.LGUI(KC.LSFT(KC.A(KC.V)))
+from kmk.handlers.sequences import simple_key_sequence
+ZOOM = simple_key_sequence(
+        (
+                KC.LGUI(KC.LSFT(KC.A)),
+                KC.LGUI(KC.LSFT(KC.V))
+        )
+)
 
 
 
@@ -112,7 +118,7 @@ keyboard.keymap = [
         KC.TAB,  KC.Q,    KC.W,    KC.E,    KC.R,    KC.T,   KC.LBRC,                           KC.RBRC, KC.Y,    KC.U,    KC.I,    KC.O,    KC.P,    UNDO,
         KC.CAPS, A_SUPER, S_SUPER, D_SUPER, F_SUPER, KC.G,   KC.BSLS,                           KC.QUOT, KC.H,    J_SUPER, K_SUPER, L_SUPER, SPC_SUP, ZOOM,  
         KC.LSFT, KC.Z,    KC.X,    KC.C,    KC.V,    KC.B,           KC.DEL,         XXXXXXX,            KC.N,    KC.M,    KC.COMM, KC.DOT,  KC.SLSH, XXXXXXX,
-        MOMENT1, KC.LCTL, KC.LALT, KC.LGUI,         ENT_SYM, SPC_NAV, BSPC_NM,      MOMENT1,  SPC_SFT,  ENT_CMD,              KC.LEFT, KC.DOWN, KC.UP, KC.RGHT,
+        MOMENT1, KC.LCTL, KC.LALT, KC.LGUI,         ENT_SYM, SPC_NAV, BSPC_NM,      MOMENT1,  KC.SPC,  KC.ESC,              KC.LEFT, KC.DOWN, KC.UP, KC.RGHT,
     ],
     # Function Layer
     [
