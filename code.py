@@ -7,7 +7,6 @@ from kmk.keys import KC
 from kmk.scanners import DiodeOrientation
 from kmk.hid import HIDModes
 
-
 from kb import varList
 
 # Initialize Keyboard
@@ -61,7 +60,8 @@ combos = Combos()
 keyboard.modules.append(combos)
 
 combos.combos = [
-    Chord((KC.Q, KC.W, KC.E, KC.R), KC.TO(5)),      # QWER to activate gaming Layer
+    Chord((KC.Q, KC.W, KC.E, KC.R), KC.TO(5)),      # QWER to switch to the gaming Layer
+    Chord((KC.U, KC.I, KC.O, KC.P), KC.TO(6)),      # QWER to switch to the Colemak Layer
     Chord((KC.N1, KC.N2, KC.N3, KC.N4), KC.TO(0))   # 1234 to go back
 ]
 
@@ -75,11 +75,12 @@ ENT_CMD = KC.HT(KC.ENT, KC.LGUI)
 SPC_SFT = KC.HT(KC.SPC, KC.LSFT)
 
 
-
+# Thumb layer keys
 ENT_SYM = KC.HT(KC.ENT, KC.MO(2), prefer_hold=False)
 BSPC_NM = KC.HT(KC.BSPC, KC.MO(3), prefer_hold=False)
 SPC_NAV = KC.HT(KC.SPC, KC.MO(4), prefer_hold=False)
 
+# QWERTY home row mods
 A_SUPER = KC.HT(KC.A, KC.LCTL, prefer_hold=False)
 S_SUPER = KC.HT(KC.S, KC.LALT, prefer_hold=False)
 D_SUPER = KC.HT(KC.D, KC.LGUI, prefer_hold=False)
@@ -90,19 +91,30 @@ K_SUPER = KC.HT(KC.K, KC.RGUI, prefer_hold=False)
 L_SUPER = KC.HT(KC.L, KC.RALT, prefer_hold=False)
 SPC_SUP = KC.HT(KC.SCLN, KC.RCTL, prefer_hold=False)
 
+# Colemak home row mods
+A_SUCOL = KC.HT(KC.A, KC.LCTL, prefer_hold=False)
+R_SUCOL = KC.HT(KC.R, KC.LALT, prefer_hold=False)
+S_SUCOL = KC.HT(KC.S, KC.LGUI, prefer_hold=False)
+T_SUCOL = KC.HT(KC.T, KC.LSFT, prefer_hold=False)
+
+N_SUCOL = KC.HT(KC.N, KC.RSFT, prefer_hold=False)
+E_SUCOL = KC.HT(KC.E, KC.RGUI, prefer_hold=False)
+I_SUCOL = KC.HT(KC.I, KC.RALT, prefer_hold=False)
+O_SUCOL = KC.HT(KC.O, KC.RCTL, prefer_hold=False)
 
 
 XXXXXXX = KC.NO
 
 # M custom buttons
 UNDO = KC.LGUI(KC.Z)
-from kmk.handlers.sequences import simple_key_sequence
-ZOOM = simple_key_sequence(
-        (
-                KC.LGUI(KC.LSFT(KC.A)),
-                KC.LGUI(KC.LSFT(KC.V))
-        )
+from kmk.modules.macros import Delay, Macros, Tap
+macros = Macros()
+keyboard.modules.append(macros)
+ZOOM = KC.MACRO(
+    Tap(KC.LGUI(KC.LSFT(KC.A))),
+    Tap(KC.LGUI(KC.LSFT(KC.V)))
 )
+
 
 
 
@@ -114,11 +126,11 @@ ZOOM = simple_key_sequence(
 keyboard.keymap = [
     # Qwerty
     [
-        KC.ESC,  KC.N1,	  KC.N2,   KC.N3,   KC.N4,   KC.N5,  KC.MINS,                           KC.EQL,  KC.N6,   KC.N7,   KC.N8,   KC.N9,   KC.N0,   KC.BSPC,  
+        KC.ESC,  KC.N1,   KC.N2,   KC.N3,   KC.N4,   KC.N5,  KC.MINS,                           KC.EQL,  KC.N6,   KC.N7,   KC.N8,   KC.N9,   KC.N0,   KC.BSPC,  
         KC.TAB,  KC.Q,    KC.W,    KC.E,    KC.R,    KC.T,   KC.LBRC,                           KC.RBRC, KC.Y,    KC.U,    KC.I,    KC.O,    KC.P,    UNDO,
         KC.CAPS, A_SUPER, S_SUPER, D_SUPER, F_SUPER, KC.G,   KC.BSLS,                           KC.QUOT, KC.H,    J_SUPER, K_SUPER, L_SUPER, SPC_SUP, ZOOM,  
         KC.LSFT, KC.Z,    KC.X,    KC.C,    KC.V,    KC.B,           KC.DEL,         XXXXXXX,            KC.N,    KC.M,    KC.COMM, KC.DOT,  KC.SLSH, XXXXXXX,
-        MOMENT1, KC.LCTL, KC.LALT, KC.LGUI,         ENT_SYM, SPC_NAV, BSPC_NM,      MOMENT1,  KC.SPC,  KC.ESC,              KC.LEFT, KC.DOWN, KC.UP, KC.RGHT,
+        MOMENT1, KC.LCTL, KC.LALT, KC.LGUI,         ENT_SYM, SPC_NAV, BSPC_NM,      MOMENT1,  KC.SPC,  KC.ENT,              KC.LEFT, KC.DOWN, KC.UP, KC.RGHT,
     ],
     # Function Layer
     [
@@ -159,6 +171,14 @@ keyboard.keymap = [
         KC.CAPS, KC.A,    KC.S,    KC.D,    KC.F,    KC.G,   KC.BSLS,                           KC.SLSH, KC.H,    KC.J,    KC.K,    KC.L,    KC.SCLN, XXXXXXX,  
         KC.LSFT, KC.Z,    KC.X,    KC.C,    KC.V,    KC.B,           KC.DEL,         XXXXXXX,            KC.N,    KC.M,    KC.COMM, KC.DOT,  KC.QUOT, XXXXXXX,
         MOMENT1, KC.LCTL, KC.LGUI, KC.LALT,        KC.LCTL, KC.SPC, XXXXXXX,      XXXXXXX, XXXXXXX, XXXXXXX,            KC.LEFT, KC.DOWN, KC.UP, KC.RGHT, 
+    ],
+    # Colemak Layer
+    [
+        KC.ESC,  KC.N1,   KC.N2,   KC.N3,   KC.N4,   KC.N5,  KC.MINS,                           KC.EQL,  KC.N6,   KC.N7,   KC.N8,   KC.N9,   KC.N0,   KC.BSPC,  
+        KC.TAB,  KC.Q,    KC.W,    KC.F,    KC.P,    KC.G,   KC.LBRC,                           KC.RBRC, KC.J,    KC.L,    KC.U,    KC.Y,    KC.SCLN,    UNDO,
+        KC.CAPS, A_SUCOL, R_SUCOL, S_SUCOL, T_SUCOL, KC.D,   KC.BSLS,                           KC.QUOT, KC.H,    N_SUCOL, E_SUCOL, I_SUCOL, O_SUCOL, ZOOM,  
+        KC.LSFT, KC.Z,    KC.X,    KC.C,    KC.V,    KC.B,           KC.DEL,         XXXXXXX,            KC.K,    KC.M,    KC.COMM, KC.DOT,  KC.SLSH, XXXXXXX,
+        MOMENT1, KC.LCTL, KC.LALT, KC.LGUI,         ENT_SYM, SPC_NAV, BSPC_NM,      MOMENT1,  KC.SPC,  KC.ENT,              KC.LEFT, KC.DOWN, KC.UP, KC.RGHT,
     ],
 ]
 
